@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+//This Code is from the Mirror Youtube Courses and discribes a way of syncing the projectiles
+// while the projectiles are only monobehaviours. This causes less networking traffic
+
 public class ProjectileNetwork : MonoBehaviour
 {
     #region serialized

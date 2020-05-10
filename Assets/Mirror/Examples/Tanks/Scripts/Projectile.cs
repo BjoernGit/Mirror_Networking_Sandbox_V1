@@ -1,4 +1,6 @@
 using UnityEngine;
+using Mirror;
+using Mirror.Examples.NetworkRoom;
 
 namespace Mirror.Examples.Tanks
 {
@@ -7,6 +9,11 @@ namespace Mirror.Examples.Tanks
         public float destroyAfter = 5;
         public Rigidbody rigidBody;
         public float force = 1000;
+
+        [SyncVar]
+        public GameObject shooterGO;
+        [SyncVar]
+        public uint shooterID;
 
         public override void OnStartServer()
         {
@@ -32,7 +39,29 @@ namespace Mirror.Examples.Tanks
         [ServerCallback]
         void OnTriggerEnter(Collider co)
         {
+            RpcClaimPrize();
             NetworkServer.Destroy(gameObject);
+        }
+
+        //[Server]
+        [ClientRpc]
+        void RpcClaimPrize()
+        {
+            // Null check is required, otherwise close timing of multiple claims could throw a null ref.
+            //hitObject.GetComponent<Reward>().ClaimPrize(gameObject);
+            Debug.Log(shooterGO);
+            if (shooterGO != null)
+            {
+                //CmdRequestScoreIncrease();
+                shooterGO.GetComponent<PlayerScore>().CmdIncreaseScore();
+
+            }
+        }
+
+        [Command]
+        void CmdRequestScoreIncrease()
+        {
+
         }
     }
 }
