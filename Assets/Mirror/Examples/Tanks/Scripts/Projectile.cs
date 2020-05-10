@@ -52,16 +52,9 @@ namespace Mirror.Examples.Tanks
             Debug.Log(shooterGO);
             if (shooterGO != null)
             {
-                //CmdRequestScoreIncrease();
                 shooterGO.GetComponent<PlayerScore>().CmdIncreaseScore();
 
             }
-        }
-
-        [Command]
-        void CmdRequestScoreIncrease()
-        {
-
         }
     }
 }
