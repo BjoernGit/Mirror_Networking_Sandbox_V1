@@ -39,6 +39,7 @@ namespace Mirror.Examples.Tanks
         [ServerCallback]
         void OnTriggerEnter(Collider co)
         {
+            Debug.Log(shooterID);
             RpcClaimPrize();
             NetworkServer.Destroy(gameObject);
         }
@@ -49,12 +50,22 @@ namespace Mirror.Examples.Tanks
         {
             // Null check is required, otherwise close timing of multiple claims could throw a null ref.
             //hitObject.GetComponent<Reward>().ClaimPrize(gameObject);
-            Debug.Log(shooterGO);
+            Debug.Log(shooterID + "RPC");
             if (shooterGO != null)
             {
-                shooterGO.GetComponent<PlayerScore>().CmdIncreaseScore();
+                Debug.Log("fuck");
+                //CmdCallThis();
+
+                //try something from discord
+                NetworkIdentity.spawned[shooterID].gameObject.GetComponent<PlayerScore>().CmdIncreaseScore();
 
             }
+        }
+
+        [Command]
+        private void CmdCallThis()
+        {
+            shooterGO.GetComponent<PlayerScore>().CmdIncreaseScore();
         }
     }
 }

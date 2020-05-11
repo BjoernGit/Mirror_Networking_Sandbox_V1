@@ -32,7 +32,6 @@ public class ShootProjectilesSynced : NetworkBehaviour
         projectile.GetComponent<Projectile>().shooterID = GetComponent<NetworkIdentity>().netId;
 
         NetworkServer.Spawn(projectile);
-
     }
 
 
