@@ -15,6 +15,11 @@ public class Movement : NetworkBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (!isClient)
+        {
+            return;
+        }
+
         float translation = 0f;
         float rotation = 0f;
 
@@ -25,16 +30,16 @@ public class Movement : NetworkBehaviour
 
             translation *= Time.deltaTime;
             rotation *= Time.deltaTime;
+
+            this.translation = translation;
+            this.rotation = rotation;
+
+            CmdMove();
         }
-
-        this.translation = translation;
-        this.rotation = rotation;
-
-        CmdMove();
 
     }
 
-    [Client]
+    [Command]
     private void CmdMove()
     {
         RpcMove();
