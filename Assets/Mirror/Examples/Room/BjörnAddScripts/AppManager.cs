@@ -11,8 +11,6 @@ namespace Mirror.Examples.Bjorn
 
         private SyncListUInt playerScores = new SyncListUInt();
 
-
-
         public void Start()
         {
             if (!base.isServer)
@@ -22,12 +20,6 @@ namespace Mirror.Examples.Bjorn
             {
                 playerScores.Add((uint)i);
             }
-        }
-
-        // Update is called once per frame
-        void Update()
-        {
-
         }
 
         public SyncListUInt GetAllPlayerScores()
