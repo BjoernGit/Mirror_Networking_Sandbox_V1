@@ -4,37 +4,63 @@ using UnityEngine;
 
 using UnityEngine.UI;
 using Mirror.Examples.Bjorn;
+using Mirror.Examples.NetworkRoom;
+using Mirror.Examples.Tanks;
+
 using Mirror;
 
 public class NewNetworkedScore : NetworkBehaviour
 {
-    [SerializeField] private Text scoresText;
+    //[SerializeField] private Text scoresText;
 
-    private AppManager appManager;
-    private SyncListUInt playerScores = new SyncListUInt();
-    private string scoresString;
+    //private AppManager appManager;
+    //private SyncListUInt playerScores = new SyncListUInt();
+    //private string scoresString;
 
-    private void Start()
+    //private void Start()
+    //{
+    //    for (int i = 0; i < 10; i++)
+    //    {
+    //        playerScores.Add(0);
+    //    }
+
+    //    appManager = GameObject.Find("AppManager").GetComponent<AppManager>();
+    //}
+
+
+    //// Update is called once per frame
+    //void Update()
+    //{
+    //    playerScores = appManager.GetAllPlayerScores();
+
+    //    scoresString = "";
+    //    foreach (uint item in playerScores)
+    //    {
+    //        scoresString += item + " ";
+    //    }
+    //    scoresText.text = scoresString;
+    //}
+
+    public override void OnStartClient()
     {
-        for (int i = 0; i < 10; i++)
+        if (hasAuthority)
         {
-            playerScores.Add(0);
-        }
+            base.OnStartClient();
 
-        appManager = GameObject.Find("AppManager").GetComponent<AppManager>();
+            string _netID = GetComponent<NetworkIdentity>().netId.ToString();
+            PlayerScore _player = GetComponent<PlayerScore>();
+
+            Debug.Log(_player.name);
+
+            AppManager.instance.RegisterPlayer(_netID, _player);
+
+        }
     }
 
-
-    // Update is called once per frame
-    void Update()
+    // When we are destroyed
+    void OnDisable()
     {
-        playerScores = appManager.GetAllPlayerScores();
-
-        scoresString = "";
-        foreach (uint item in playerScores)
-        {
-            scoresString += item + " ";
-        }
-        scoresText.text = scoresString;
+        AppManager.instance.UnRegisterPlayer(transform.name);
     }
 }
+

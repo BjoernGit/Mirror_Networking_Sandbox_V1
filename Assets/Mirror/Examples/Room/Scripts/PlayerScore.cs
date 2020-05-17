@@ -35,20 +35,20 @@ namespace Mirror.Examples.NetworkRoom
             CmdIncreaseScore();
         }
 
-        [Command]
+        [Server]
         public void CmdIncreaseScore()
         {
 
             uint points = 1;
             score += points;
-            CmdSendScore();
+            //CmdSendScore();
         }
 
-        [Server]
-        private void CmdSendScore()
-        {
-            appManager.CmdWritePlayerScore(index, score);
-        }
+        //[Server]
+        //private void CmdSendScore()
+        //{
+        //    appManager.CmdWritePlayerScore(index, score);
+        //}
 
 
 

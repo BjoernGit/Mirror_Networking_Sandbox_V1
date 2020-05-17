@@ -17,14 +17,12 @@ public class PlayerHealth : NetworkBehaviour
         healthText.text = health.ToString();
         healthText.transform.parent.LookAt(Camera.main.transform);
 
-        if (!base.isServer)
+        if (isServer)
         {
-            return;
-        }
-
-        if (Random.Range(0f,1000f)<2f)
-        {
-            TakeDamage(1);
+            if (Random.Range(0f, 1000f) < 2f)
+            {
+                TakeDamage(1);
+            }
         }
     }
 

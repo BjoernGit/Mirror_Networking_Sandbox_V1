@@ -1,6 +1,7 @@
 using UnityEngine;
 using Mirror;
 using Mirror.Examples.NetworkRoom;
+using Mirror.Examples.Bjorn;
 
 namespace Mirror.Examples.Tanks
 {
@@ -40,24 +41,26 @@ namespace Mirror.Examples.Tanks
         void OnTriggerEnter(Collider co)
         {
             Debug.Log(shooterID);
-            RpcClaimPrize();
             NetworkServer.Destroy(gameObject);
+            NetworkIdentity netID = co.GetComponent<NetworkIdentity>();
+            if (netID != null)
+            {
+                RpcClaimPrize();
+
+            }
         }
 
-        //[Server]
-        [ClientRpc]
+        [Server]
+        //[ClientRpc]
         void RpcClaimPrize()
         {
             // Null check is required, otherwise close timing of multiple claims could throw a null ref.
             //hitObject.GetComponent<Reward>().ClaimPrize(gameObject);
-            Debug.Log(shooterID + "RPC");
-            if (shooterGO != null)
+            if (shooterID > 0f)
             {
-                Debug.Log("fuck");
-                //CmdCallThis();
+                Debug.Log(shooterID);
 
-                //try something from discord
-                NetworkIdentity.spawned[shooterID].gameObject.GetComponent<PlayerScore>().CmdIncreaseScore();
+                AppManager.instance.IncreaseScoreOfPlayer(shooterID.ToString());
 
             }
         }

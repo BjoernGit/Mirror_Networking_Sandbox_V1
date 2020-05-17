@@ -30,6 +30,7 @@ public class ShootProjectilesSynced : NetworkBehaviour
         GameObject projectile = Instantiate(projectilePrefab, projectileMount.position, transform.rotation);
         projectile.GetComponent<Projectile>().shooterGO = gameObject;
         projectile.GetComponent<Projectile>().shooterID = GetComponent<NetworkIdentity>().netId;
+        Debug.Log(GetComponent<NetworkIdentity>().netId);
 
         NetworkServer.Spawn(projectile);
     }

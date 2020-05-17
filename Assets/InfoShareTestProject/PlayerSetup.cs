@@ -34,4 +34,9 @@ public class PlayerSetup : NetworkBehaviour
         }
     }
 
+    // When we are destroyed
+    void OnDisable()
+    {
+        ID_Manager.UnRegisterPlayer(transform.name);
+    }
 }

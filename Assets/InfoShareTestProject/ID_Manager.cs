@@ -24,8 +24,6 @@ public class ID_Manager : MonoBehaviour
 
     public static void RegisterPlayer (string _netID, PlayerHealth _player)
     {
-        Debug.Log(_netID);
-        Debug.Log(_player.name);
         string _playerID = PLAYER_ID_PREFIX + _netID;
         players.Add(_playerID, _player);
         _player.transform.name = _playerID;
