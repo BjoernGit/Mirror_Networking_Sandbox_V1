@@ -45,14 +45,14 @@ namespace Mirror.Examples.Tanks
             NetworkIdentity netID = co.GetComponent<NetworkIdentity>();
             if (netID != null)
             {
-                RpcClaimPrize();
+                RpcClaimPrize(netID);
 
             }
         }
 
         [Server]
         //[ClientRpc]
-        void RpcClaimPrize()
+        void RpcClaimPrize(NetworkIdentity netID)
         {
             // Null check is required, otherwise close timing of multiple claims could throw a null ref.
             //hitObject.GetComponent<Reward>().ClaimPrize(gameObject);
@@ -60,7 +60,7 @@ namespace Mirror.Examples.Tanks
             {
                 Debug.Log(shooterID);
 
-                AppManager.instance.IncreaseScoreOfPlayer(shooterID.ToString());
+                AppManager.instance.IncreaseScoreOfPlayer(netID.netId);
 
             }
         }

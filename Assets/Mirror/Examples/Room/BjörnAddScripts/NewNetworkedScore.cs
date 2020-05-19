@@ -41,26 +41,35 @@ public class NewNetworkedScore : NetworkBehaviour
     //    scoresText.text = scoresString;
     //}
 
+    private uint netID;
+
     public override void OnStartClient()
     {
         if (hasAuthority)
         {
             base.OnStartClient();
 
-            string _netID = GetComponent<NetworkIdentity>().netId.ToString();
+            netID = GetComponent<NetworkIdentity>().netId;
             PlayerScore _player = GetComponent<PlayerScore>();
 
-            Debug.Log(_player.name);
+            Debug.Log("Hello My Name is " + _player.name);
 
-            AppManager.instance.RegisterPlayer(_netID, _player);
+            //AppManager.instance.RegisterPlayer(_netID);
 
+            CmdRequestAppManagerDictEntry(netID);
         }
+    }
+
+    [Command]
+    void CmdRequestAppManagerDictEntry(uint _netID)
+    {
+        AppManager.instance.CmdDictEntryByServer(_netID);
     }
 
     // When we are destroyed
     void OnDisable()
     {
-        AppManager.instance.UnRegisterPlayer(transform.name);
+        AppManager.instance.UnRegisterPlayer(netID);
     }
 }
 

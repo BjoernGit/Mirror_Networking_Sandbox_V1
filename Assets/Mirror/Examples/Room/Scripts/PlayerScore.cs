@@ -44,6 +44,12 @@ namespace Mirror.Examples.NetworkRoom
             //CmdSendScore();
         }
 
+        [Server]
+        public void updatePoints(uint score)
+        {
+            this.score = score;
+        }
+
         //[Server]
         //private void CmdSendScore()
         //{

@@ -20,10 +20,9 @@ public class ShootProjectilesSynced : NetworkBehaviour
             {
                 CmdSpawnProjectile();
             }
-
         }
-
     }
+
     [Command]
     private void CmdSpawnProjectile()
     {

@@ -25,50 +25,32 @@ namespace Mirror.Examples.Bjorn
 
         private const string PLAYER_ID_PREFIX = "Player ";
 
-        private SyncListUInt playerScores = new SyncListUInt();
+        private static Dictionary<uint, uint> playerScoreDict = new Dictionary<uint, uint>();
 
-        private static Dictionary<string, PlayerScore> playerScoreDict = new Dictionary<string, PlayerScore>();
 
-        public void Start()
+        public void RegisterPlayer(uint _netID)
         {
-            if (!base.isServer)
-                return;
-
-            for (int i = 0; i < 10; i++)
-            {
-                playerScores.Add((uint)i);
-            }
+            uint _playerID = /*PLAYER_ID_PREFIX + */_netID;
+            CmdDictEntryByServer(_playerID);
         }
 
-        public  void RegisterPlayer(string _netID, PlayerScore _player)
+        [Server]
+        public void CmdDictEntryByServer(uint _playerID)
         {
-            string _playerID = /*PLAYER_ID_PREFIX + */_netID;
-            //CmdDictEntryByServer(_playerID, _player);
+            playerScoreDict.Add(_playerID, 0);
+            playerScoreDict[_playerID] = 0;
         }
 
-        [Command]
-        public void CmdDictEntryByServer(string _playerID, PlayerScore _playerScoreVar)
-        {
-            //playerScoreDict.Add(_playerID, _playerScoreVar);
-            //_playerScoreVar.transform.name = _playerID;
-
-        }
-
-        public  void UnRegisterPlayer(string _playerID)
+        public void UnRegisterPlayer(uint _playerID)
         {
             playerScoreDict.Remove(_playerID);
         }
 
-        public void IncreaseScoreOfPlayer(string _playerID)
+        public void IncreaseScoreOfPlayer(uint _playerID)
         {
-            Debug.Log(_playerID);
-
-            foreach (var item in playerScoreDict)
-            {
-                Debug.Log("dict_item" + item.Key);
-            }
-
-            playerScoreDict[_playerID].CmdIncreaseScore();
+            playerScoreDict[_playerID] += 1;
+            Debug.Log(_playerID + " has points: " + playerScoreDict[_playerID]);
+            NetworkIdentity.spawned[_playerID].gameObject.GetComponent<PlayerScore>().updatePoints(playerScoreDict[_playerID]);
         }
 
         //public SyncListUInt GetAllPlayerScores()
@@ -85,8 +67,6 @@ namespace Mirror.Examples.Bjorn
         //    playerScores[index] = value;
 
         //}
-
-
 
     }
 }
